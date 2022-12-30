@@ -4,10 +4,10 @@ from DeepSearch import DeepSearch
 deepSearch = DeepSearch()
 
 # Start processing the images
-deepSearch.Start("input/images_0")
+deepSearch.Start("input/test")
 
 # Search for similar images
-similar = deepSearch.get_similar_images("lookup/eli.jpg", num_results=50, with_distance=True)
+similar = deepSearch.get_similar_images("lookup/test.jpg", num_results=2, with_distance=True)
 
 # Print the results
 print(similar)

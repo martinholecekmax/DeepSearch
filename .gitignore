@@ -133,5 +133,4 @@ output/
 
 lookup/
 
-test.py
-process-images.sh
+test/
