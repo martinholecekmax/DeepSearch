@@ -6,55 +6,38 @@ import numpy as np
 from PIL import Image
 
 import keras.utils as image_utils
-from keras.models import Model
-from keras.layers import Input
-from keras.applications.vgg16 import VGG16, preprocess_input as vgg_preprocess_input
-from keras.applications.inception_v3 import (
-    InceptionV3,
-    preprocess_input as inception_preprocess_input,
-)
-from keras.applications.resnet import ResNet50, preprocess_input as resnet_preprocess_input
-from keras.applications.xception import Xception, preprocess_input as xception_preprocess_input
+
+from DeepSearch.ModelLoader import ModelLoader, models
+
 
 metrics = ["angular", "euclidean", "manhattan", "hamming", "dot"]
-models = ["VGG16", "InceptionV3", "ResNet50", "Xception"]
 
 
 class DeepSearch:
+    """
+    DeepSearch is a class that allows you to search for similar images using deep learning models and Annoy Indexes.
+    """
+
     def __init__(self, verbose=False, metric="angular", n_trees=100, model_name="VGG16"):
+        """
+        Initialize the DeepSearch object
+        :param verbose: Print the progress of the model
+        :param metric: Metric to use for the index
+        :param n_trees: Number of trees to use for the index
+        :param model_name: Model to use for the feature extraction
+        defaults:
+            verbose: False
+            metric: angular
+            n_trees: 100
+            model_name: VGG16
+        """
         self.verbose = verbose
-        self.set_model(model_name)
         self.set_metric(metric)
         self.set_n_trees(n_trees)
+        self.model = ModelLoader(model_name)
 
-    def set_model(self, model_name):
-        if model_name not in models:
-            raise Exception(f"Model must be one of {models}")
-
-        if model_name == "VGG16":
-            base_model = VGG16(weights="imagenet")
-            self.model = Model(inputs=base_model.input, outputs=base_model.get_layer("fc1").output)
-            self.model_name = "VGG16"
-        elif model_name == "ResNet50":
-            base_model = ResNet50(weights="imagenet")
-            self.model = Model(
-                inputs=base_model.input, outputs=base_model.get_layer("avg_pool").output
-            )
-            self.model_name = "ResNet50"
-        elif model_name == "InceptionV3":
-            input_tensor = Input(shape=(224, 224, 3))
-            base_model = InceptionV3(weights="imagenet", input_tensor=input_tensor)
-            self.model = Model(
-                inputs=base_model.input, outputs=base_model.get_layer("avg_pool").output
-            )
-            self.model_name = "InceptionV3"
-        elif model_name == "Xception":
-            input_tensor = Input(shape=(224, 224, 3))
-            base_model = Xception(weights="imagenet", input_tensor=input_tensor)
-            self.model = Model(
-                inputs=base_model.input, outputs=base_model.get_layer("avg_pool").output
-            )
-            self.model_name = "Xception"
+    def get_available_models(self):
+        return list(models.keys())
 
     def set_metric(self, metric):
         if metric not in metrics:
@@ -65,12 +48,13 @@ class DeepSearch:
         self.n_trees = n_trees
 
     def set_paths(self, db_path):
+        model_name = self.model.get_model_name()
         representations_path = os.path.join(
-            db_path, f"{self.model_name}_{self.metric}_{self.n_trees}_representations.pkl"
+            db_path, f"{model_name}_{self.metric}_{self.n_trees}_representations.pkl"
         )
         representations_path = representations_path.replace("\\", "/")
         annoy_index_path = os.path.join(
-            db_path, f"{self.model_name}_{self.metric}_{self.n_trees}_annoy_index.ann"
+            db_path, f"{model_name}_{self.metric}_{self.n_trees}_annoy_index.ann"
         )
         annoy_index_path = annoy_index_path.replace("\\", "/")
         self.representations_path = representations_path
@@ -97,19 +81,10 @@ class DeepSearch:
         x = np.expand_dims(x, axis=0)
 
         # Preprocess the image
-        if self.model_name == "VGG16":
-            x = vgg_preprocess_input(x)
-        elif self.model_name == "ResNet50":
-            x = resnet_preprocess_input(x)
-        elif self.model_name == "InceptionV3":
-            x = inception_preprocess_input(x)
-        elif self.model_name == "Xception":
-            x = xception_preprocess_input(x)
-        else:
-            raise Exception(f"Model must be one of {models}")
+        x = self.model.preprocess_input(x)
 
         # Extract Features
-        feature = self.model.predict(x, verbose=self.verbose)[0]
+        feature = self.model.predict(x, verbose=self.verbose)
         return feature / np.linalg.norm(feature)
 
     def get_features(self, images):
@@ -165,8 +140,8 @@ class DeepSearch:
             self.set_n_trees(n_trees)
 
         # Set model_name if different and not null
-        if model_name and model_name != self.model_name:
-            self.set_model(model_name)
+        if model_name and model_name != self.model.get_model_name():
+            self.model.load_model(model_name)
 
         if os.path.exists(db_path):
             # Load images
@@ -237,7 +212,7 @@ class DeepSearch:
             print("Please Enter the Valid Folder Path")
             return False
 
-    def get_similar_images(self, image_path, num_results=10, with_distance=False):
+    def get_similar_images(self, image_path, num_results=10, with_distance=True):
         query_vector = self.extract(image_path)
         annoy_index_path = self.annoy_index_path
         representations_path = self.representations_path

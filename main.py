@@ -16,11 +16,29 @@ import os
     prompt="Output path",
     help="The folder that will contain the results.",
 )
-def main(folder, image, output):
+@click.option(
+    "--model",
+    prompt="Model name",
+    help="The model to use for the feature extraction.",
+    default="VGG16",
+)
+@click.option(
+    "--metric",
+    prompt="Metric",
+    help="The metric to use for the index.",
+    default="angular",
+)
+@click.option(
+    "--n_trees",
+    prompt="Number of trees",
+    help="The number of trees to use for the index.",
+    default=100,
+)
+def main(folder, image, output, model, metric, n_trees):
     print(f"Folder: {folder}")
 
     # Create a DeepSearch object
-    deepSearch = DeepSearch(verbose=True)
+    deepSearch = DeepSearch(verbose=True, model_name=model, metric=metric, n_trees=n_trees)
 
     # Start processing the images
     # "input/images"
@@ -38,8 +56,9 @@ def main(folder, image, output):
 
     # Copy the results to the output folder (dictionary)
     counter = 0
-    for key, image in similar.items():
-        shutil.copy(image, f"{output}/{counter}.jpg")
+    for image in similar:
+        image_path = image["image_path"]
+        shutil.copy(image_path, f"{output}/{counter}.jpg")
         counter += 1
 
 
