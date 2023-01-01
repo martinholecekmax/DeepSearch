@@ -24,7 +24,7 @@ def main(folder, image, output):
 
     # Start processing the images
     # "input/images"
-    deepSearch.Start(folder)
+    deepSearch.build(folder)
 
     # Search for similar images
     # "input/images/1.jpg"
