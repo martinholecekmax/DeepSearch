@@ -21,33 +21,49 @@ class DeepSearch:
     def __init__(self, verbose=False, metric="angular", n_trees=100, model_name="VGG16"):
         """
         Initialize the DeepSearch object
-        :param verbose: Print the progress of the model
-        :param metric: Metric to use for the index
-        :param n_trees: Number of trees to use for the index
-        :param model_name: Model to use for the feature extraction
-        defaults:
-            verbose: False
-            metric: angular
-            n_trees: 100
-            model_name: VGG16
+
+        verbose: bool, optional, default=False
+            Print the progress of the model
+        metric: str, optional, default=angular
+            Metric to use for the index
+        n_trees: int, optional, default=100
+            Number of trees to use for the index
+        model_name: str, optional, default=VGG16
+            Model name to use for the feature extraction
         """
         self.verbose = verbose
         self.set_metric(metric)
         self.set_n_trees(n_trees)
         self.model = ModelLoader(model_name)
 
-    def get_available_models(self):
+    def get_available_models(self) -> list:
+        """Get the available models
+
+        Returns:
+            list: List of available models
+        """
         return list(models.keys())
 
-    def set_metric(self, metric):
+    def set_metric(self, metric: str):
+        """Set the metric to use for the index"""
         if metric not in metrics:
             raise Exception(f"Metric must be one of {metrics}")
         self.metric = metric
 
-    def set_n_trees(self, n_trees):
+    def set_n_trees(self, n_trees: int):
+        """Set the number of trees to use for the index
+
+        Args:
+            n_trees (int): Number of trees
+        """
         self.n_trees = n_trees
 
-    def set_paths(self, db_path):
+    def set_paths(self, db_path: str):
+        """Set the paths for the representations and annoy index
+
+        Args:
+            db_path (str): Path to the database
+        """
         model_name = self.model.get_model_name()
         representations_path = os.path.join(
             db_path, f"{model_name}_{self.metric}_{self.n_trees}_representations.pkl"
@@ -60,7 +76,15 @@ class DeepSearch:
         self.representations_path = representations_path
         self.annoy_index_path = annoy_index_path
 
-    def load_images(self, db_path):
+    def load_images(self, db_path: str) -> list:
+        """Load the images from the database path
+
+        Args:
+            db_path (str): Path to the database
+
+        Returns:
+            list: List of images
+        """
         images = []
         for file in os.listdir(db_path):
             if file.endswith(".jpg") or file.endswith(".png"):
@@ -69,7 +93,15 @@ class DeepSearch:
                 images.append(image_path)
         return images
 
-    def extract(self, image):
+    def extract(self, image: str) -> np.array:
+        """Extract the features from the image
+
+        Args:
+            image (str): Path to the image
+
+        Returns:
+            np.array: Array of features
+        """
         # Load the image
         image = Image.open(image)
         # Resize the image
@@ -87,7 +119,15 @@ class DeepSearch:
         feature = self.model.predict(x, verbose=self.verbose)
         return feature / np.linalg.norm(feature)
 
-    def get_features(self, images):
+    def get_features(self, images: list) -> list:
+        """Get the features from the images
+
+        Args:
+            images (list): List of images
+
+        Returns:
+            list: List of features
+        """
         features = []
         for image in tqdm(images):
             try:
@@ -98,7 +138,16 @@ class DeepSearch:
                 continue
         return features
 
-    def start_feature_extraction(self, images, representations_path):
+    def start_feature_extraction(self, images: list, representations_path: str) -> pd.DataFrame:
+        """Start the feature extraction
+
+        Args:
+            images (list): List of images
+            representations_path (str): Path to save the representations
+
+        Returns:
+            pd.DataFrame: Pandas Dataframe with the images and features
+        """
         images_data = pd.DataFrame()
         images_data["images_path"] = images
         images_data["features"] = self.get_features(images)
@@ -107,7 +156,13 @@ class DeepSearch:
         print(f"Features extracted and saved to {representations_path}")
         return images_data
 
-    def start_indexing(self, images_data, annoy_index_path):
+    def start_indexing(self, images_data: pd.DataFrame, annoy_index_path: str):
+        """Start the indexing process and save the annoy index
+
+        Args:
+            images_data (pd.DataFrame): Pandas Dataframe with the images and features
+            annoy_index_path (str): Path to save the annoy index
+        """
         dim = len(images_data["features"][0])
         annoy_index = AnnoyIndex(dim, self.metric)
         for i, feature in tqdm(zip(images_data.index, images_data["features"])):
@@ -116,7 +171,12 @@ class DeepSearch:
         annoy_index.save(annoy_index_path)
         print(f"Annoy index built and saved to {annoy_index_path}")
 
-    def rebuild(self, db_path):
+    def rebuild(self, db_path: str):
+        """Rebuild the index and representations from the database path
+
+        Args:
+            db_path (str): Path to the database
+        """
         # Load images
         images = self.load_images(db_path)
 
@@ -129,7 +189,29 @@ class DeepSearch:
         # Build Annoy index
         self.start_indexing(images_data, self.annoy_index_path)
 
-    def build(self, db_path, metric=None, n_trees=None, model_name=None):
+    def build(
+        self, db_path: str, metric: str = None, n_trees: int = None, model_name: str = None
+    ) -> bool:
+        """Build the index and representations from the database path and save them to the database path.
+
+        Args:
+            db_path (str, required):
+                Path to the database
+            metric (str, optional):
+                Metric to use for the index (euclidean, manhattan, angular, etc.). Defaults to None.
+            n_trees (int, optional):
+                Number of trees to use for the index. Defaults to None.
+            model_name (str, optional):
+                Name of the model to use for the feature extraction. Defaults to None.
+
+        Note:
+            If metric, n_trees or model_name are not provided,
+            the default values will be used, which were set
+            when the class was instantiated.
+
+        Returns:
+            bool: True if the index and representations were built successfully, False otherwise
+        """
 
         # Set Metric if different and not null
         if metric and metric != self.metric:
@@ -161,7 +243,7 @@ class DeepSearch:
                 for image in image_data["images_path"]:
                     if image not in images:
                         print(f"Image {image} removed from database")
-                        # Remove image from representations pandas dataframe
+                        # Remove image from representations pandas DataFrame
                         image_data = image_data[image_data["images_path"] != image]
                         update = True
 
@@ -212,7 +294,27 @@ class DeepSearch:
             print("Please Enter the Valid Folder Path")
             return False
 
-    def get_similar_images(self, image_path, num_results=10, with_distance=True):
+    def get_similar_images(
+        self, image_path: str, num_results: int = 10, with_distance: bool = True
+    ) -> dict:
+        """Get similar images to the query image
+
+        Args:
+            image_path (str):
+                Path to the query image
+            num_results (int, optional):
+                Number of similar images to return. Defaults to 10.
+            with_distance (bool, optional):
+                Whether to return the calculated distances. Defaults to True.
+
+        Returns:
+            dict: Dictionary with the similar images and distances. Lower distance means more similar.
+                {
+                    "index": [0, 1, 2, ...] - index of the image in the database,
+                    "distance": [0.0, 0.1, 0.2, ...] - distance to the query image (depends on the metric),
+                    "image_path": ["path/to/image1", "path/to/image2", ...] - path to the image in the database
+                }
+        """
         query_vector = self.extract(image_path)
         annoy_index_path = self.annoy_index_path
         representations_path = self.representations_path
