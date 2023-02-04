@@ -36,7 +36,8 @@ class DeepSearch:
         self.set_n_trees(n_trees)
         self.model = ModelLoader(model_name)
 
-    def get_available_models(self) -> list:
+    @staticmethod
+    def get_available_models() -> list:
         """Get the available models
 
         Returns:
@@ -44,7 +45,8 @@ class DeepSearch:
         """
         return list(models.keys())
 
-    def get_available_metrics(self) -> list:
+    @staticmethod
+    def get_available_metrics() -> list:
         """Get the available metrics
 
         Returns:
@@ -323,6 +325,9 @@ class DeepSearch:
                     "image_path": ["path/to/image1", "path/to/image2", ...] - path to the image in the database
                 }
         """
+        if not os.path.exists(image_path):
+            raise FileNotFoundError(f"Image {image_path} not found")
+
         query_vector = self.extract(image_path)
         annoy_index_path = self.annoy_index_path
         representations_path = self.representations_path

@@ -8,6 +8,23 @@ The DeepSearch engine is built on top of the [Annoy](https://github.com/spotify/
 
 The engine uses a pre-trained models from [Keras](https://keras.io/api/applications/) to extract features from images and then stores them in an Annoy index. The index is then used to find the most similar images to a given query image.
 
+## Table of Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Importing the DeepSearch class](#importing-the-deepsearch-class)
+  - [Initializing the DeepSearch class](#initializing-the-deepsearch-class)
+  - [Building the index](#building-the-index)
+  - [Saving the index](#saving-the-index)
+  - [Searching for similar images](#searching-for-similar-images)
+- [Full Implementation Example](#full-implementation-example)
+- [CLI Usage](#cli-usage)
+- [Supported Models](#supported-models)
+- [Supported Metrics](#supported-metrics)
+- [Contributing](#contributing)
+
 ## Features
 
 - **Fast**: DeepSearch is built on top of the Annoy library, which is a fast, memory-efficient, and easy-to-use library for approximate nearest neighbor search.
@@ -45,10 +62,10 @@ Then, you need to create an instance of the DeepSearch class. You can optionally
 deepSearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbose=True)
 ```
 
-The `model_name` parameter specifies the name of the model to use for extracting features from images. The default value is `VGG16`. You can get a list of available models by calling the `get_available_models()` method as follows:
+The `model_name` parameter specifies the name of the model to use for extracting features from images. The default value is `VGG16`. You can get a list of available models by calling the static `get_available_models()` method of the DeepSearch class as follows:
 
 ```python
-models = DeepSearch().get_available_models()
+models = DeepSearch.get_available_models()
 print(models)
 ```
 
@@ -56,10 +73,10 @@ The `n_trees` parameter specifies the number of trees to use in the Annoy index.
 
 The `metric` parameter specifies the distance metric to use in the Annoy index. The default value is `angular` which is the cosine distance.
 
-You can get a list of available metrics by calling the `get_available_metrics()` method as follows:
+You can get a list of available metrics by calling the static `get_available_metrics()` method of the DeepSearch class as follows:
 
 ```python
-metrics = DeepSearch().get_available_metrics()
+metrics = DeepSearch.get_available_metrics()
 print(metrics)
 ```
 
@@ -179,8 +196,33 @@ To run the DeepSearch CLI, you need to run the DeepSearchCLI.py file as follows:
 python DeepSearchCLI.py --folder dataset --image lookup/test.jpg
 
 # Example with several options
-python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --output output --num-results 20 --metric euclidean --n-trees 20 --model ResNet50 --verbose True
+python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --output output --num_results 20 --metric euclidean --n_trees 20 --model ResNet50 --verbose True
 ```
+
+## Supported Models
+
+The following models are supported:
+
+- **[VGG16](https://keras.io/api/applications/vgg/#vgg16-function)** (default)
+- **[ResNet50](https://keras.io/api/applications/resnet/#resnet50-function)**
+- **[InceptionV3](https://keras.io/api/applications/inceptionv3/)**
+- **[Xception](https://keras.io/api/applications/xception/)**
+
+The models are case sensitive and must be specified exactly as shown above.
+
+You can easily add support for other models from the [Keras](https://keras.io/api/applications/) Applications library by adding a new model class to the `models` dictionary in the `ModelLoader` class.
+
+## Supported Metrics
+
+The following metrics are supported:
+
+- **[angular](https://en.wikipedia.org/wiki/Cosine_similarity)** (default) - The cosine similarity metric.
+- **[euclidean](https://en.wikipedia.org/wiki/Euclidean_distance)** - The Euclidean distance metric.
+- **[manhattan](https://en.wikipedia.org/wiki/Taxicab_geometry)** - The Manhattan distance metric.
+- **[hamming](https://en.wikipedia.org/wiki/Hamming_distance)** - The Hamming distance metric.
+- **[dot](https://en.wikipedia.org/wiki/Dot_product)** - The dot product metric.
+
+The metrics are case sensitive and must be specified exactly as shown above.
 
 ## Contributing
 
