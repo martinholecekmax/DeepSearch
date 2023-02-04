@@ -1,6 +1,6 @@
 # DeepSearch
 
-<p align="center"><img src="assets/logo.png" width="200" height="200"></p>
+<p align="center"><img src="https://github.com/martinholecekmax/DeepSearch/blob/main/assets/logo.png" width="200" height="200"></p>
 
 DeepSearch is a sophisticated AI-powered search engine designed to enhance image searching. It utilizes deep learning algorithms to efficiently search a vast collection of images and find the most similar matches.
 

@@ -13,7 +13,7 @@ DESCRIPTION = "DeepSearch image search engine"
 
 # Setting up
 setup(
-    name="deep-search",
+    name="deep-search-engine",
     version=VERSION,
     author="Martin Holecek",
     author_email="<martin.holecek.max@gmail.com>",
@@ -41,7 +41,7 @@ setup(
         "deep image search",
     ],
     classifiers=[
-        "Development Status :: 1 - Alpha",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Build Tools",
         "License :: OSI Approved :: MIT License",
