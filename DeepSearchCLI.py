@@ -15,6 +15,7 @@ import os
     "--output",
     prompt="Output path",
     help="The folder that will contain the results.",
+    default="output",
 )
 @click.option(
     "--model",
@@ -34,11 +35,23 @@ import os
     help="The number of trees to use for the index.",
     default=100,
 )
-def main(folder, image, output, model, metric, n_trees):
+@click.option(
+    "--num_results",
+    prompt="Number of results",
+    help="The number of results to return.",
+    default=10,
+)
+@click.option(
+    "--verbose",
+    prompt="Verbose",
+    help="Print the progress.",
+    default=False,
+)
+def main(folder, image, output, model, metric, n_trees, num_results, verbose):
     print(f"Folder: {folder}")
 
     # Create a DeepSearch object
-    deepSearch = DeepSearch(verbose=True, model_name=model, metric=metric, n_trees=n_trees)
+    deepSearch = DeepSearch(verbose=verbose, model_name=model, metric=metric, n_trees=n_trees)
 
     # Start processing the images
     # "input/images"
@@ -46,7 +59,7 @@ def main(folder, image, output, model, metric, n_trees):
 
     # Search for similar images
     # "input/images/1.jpg"
-    similar = deepSearch.get_similar_images(image, num_results=50)
+    similar = deepSearch.get_similar_images(image, num_results=num_results)
 
     # Print the results
     print(similar)

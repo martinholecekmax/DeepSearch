@@ -9,6 +9,11 @@ from keras.applications.resnet import ResNet50, preprocess_input as resnet_prepr
 from keras.applications.xception import Xception, preprocess_input as xception_preprocess_input
 import numpy as np
 
+"""
+Models dictionary from Keras documentation:
+- https://keras.io/api/applications/#usage-examples-for-image-classification-models
+"""
+
 models = {
     "VGG16": {
         "preprocess_input": vgg_preprocess_input,

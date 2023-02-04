@@ -44,6 +44,14 @@ class DeepSearch:
         """
         return list(models.keys())
 
+    def get_available_metrics(self) -> list:
+        """Get the available metrics
+
+        Returns:
+            list: List of available metrics
+        """
+        return metrics
+
     def set_metric(self, metric: str):
         """Set the metric to use for the index"""
         if metric not in metrics:
