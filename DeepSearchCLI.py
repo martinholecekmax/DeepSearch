@@ -47,18 +47,25 @@ import os
     help="Print the progress.",
     default=False,
 )
-def main(folder, image, output, model, metric, n_trees, num_results, verbose):
+@click.option(
+    "--clear",
+    prompt="Clear",
+    help="Create a new representation and index files.",
+    default=False,
+)
+def main(folder, image, output, model, metric, n_trees, num_results, verbose, clear):
     print(f"Folder: {folder}")
 
     # Create a DeepSearch object
     deepSearch = DeepSearch(verbose=verbose, model_name=model, metric=metric, n_trees=n_trees)
 
     # Start processing the images
-    # "input/images"
-    deepSearch.build(folder)
+    if clear:
+        deepSearch.rebuild(folder)
+    else:
+        deepSearch.build(folder)
 
     # Search for similar images
-    # "input/images/1.jpg"
     similar = deepSearch.get_similar_images(image, num_results=num_results)
 
     # Print the results

@@ -11,7 +11,6 @@ The engine uses a pre-trained models from [Keras](https://keras.io/api/applicati
 ## Table of Contents
 
 - [Features](#features)
-- [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Importing the DeepSearch class](#importing-the-deepsearch-class)
@@ -23,6 +22,7 @@ The engine uses a pre-trained models from [Keras](https://keras.io/api/applicati
 - [CLI Usage](#cli-usage)
 - [Supported Models](#supported-models)
 - [Supported Metrics](#supported-metrics)
+- [Impact of Image Quantity on Processing Time](#impact-of-image-quantity-on-processing-time)
 - [Contributing](#contributing)
 
 ## Features
@@ -254,6 +254,35 @@ print(metrics) # ['angular', 'euclidean', 'manhattan', 'hamming', 'dot']
 ```
 
 The metrics are case sensitive and must be specified exactly as shown above.
+
+## Impact of Image Quantity on Processing Time
+
+When processing a large number of images, it may take longer for the algorithm to generate representations. This is due to the increased computational demands of processing more data (more memory and CPU usage).
+
+Once the representations are generated, the search process is very fast. The search process is limited by the number of trees in the Annoy index. The more trees you use, the more accurate the search results will be, but the longer it will take to search.
+
+When you run the algorithm for the first time, it will generate the representations and save them to a file. The next time you run the algorithm, it will load the representations from the file instead of generating them again. This will significantly reduce the processing time.
+
+For example, I have run the algorithm on a dataset of 100,000 images and the generation of the representations took approximately 12 minutes. Each subsequent run took couple of seconds which depends on the size of the dataset and the number of trees in the Annoy index.
+
+One of the great features is that you can add more images to the dataset and run the algorithm again. The algorithm will only generate representations for the new images and will load the representations for the existing images from the file. This will significantly reduce the processing time.
+
+When the image is deleted from the dataset, the algorithm will remove the representation for the image from the file. This will avoid any issues when searching for similar images.
+
+Any of this operations will force the algorithm to remove the annoy index file and generate it again. This will ensure that the annoy index file is up to date. However, this is relatively fast operation depending on the size of the dataset and the number of trees in the Annoy index. For the previous example of 100,000 images, the generation of the annoy index file took approximately 3 seconds.
+
+You can force the algorithm to remove the representations file and annoy index file by passing the `--clear` option to the DeepSearch CLI as follows:
+
+```bash
+python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --clear True
+```
+
+Or you can call the `rebuild()` method of the DeepSearch class if you are using the DeepSearch API as follows:
+
+```python
+# Rebuild the index
+deep_search.rebuild()
+```
 
 ## Contributing
 
