@@ -129,10 +129,4 @@ dmypy.json
 .pyre/
 
 input/
-output/
-
-lookup/*
-
-test/
-
-dataset/*
+output/*

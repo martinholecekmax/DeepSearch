@@ -31,16 +31,37 @@ The engine uses a pre-trained models from [Keras](https://keras.io/api/applicati
 - **Easy to use**: DeepSearch is designed to be easy to use and integrate into your existing applications.
 - **High Accuracy**: DeepSearch uses a pre-trained model from Keras to extract features from images and then stores them in an Annoy index. The index is then used to find the most similar images to a given query image.
 
-## Requirements
-
-- [Python](https://www.python.org/downloads/) 3.10.6+
-- [TensorFlow](https://www.tensorflow.org/install) 2.11.0+
-- [Pillow](https://pypi.org/project/Pillow/)
-- [Annoy](https://github.com/spotify/annoy)
-
 ## Installation
 
-TODO
+Python 3.10.6+ is required to install DeepSearch. You can download the latest version of Python from [here](https://www.python.org/downloads/).
+
+It is recommended to install DeepSearch in a virtual environment. You can use [virtualenv](https://virtualenv.pypa.io/en/latest/) or [venv](https://docs.python.org/3/library/venv.html) to create a virtual environment.
+
+To create a virtual environment using `venv`, run the following command:
+
+```bash
+python -m venv env
+```
+
+To activate the virtual environment, run the following command:
+
+```bash
+# Windows
+source env/Scripts/activate
+
+# Linux
+source env/bin/activate
+```
+
+You also need to install TensorFlow at least 2.10.1 which can be downloaded from [here](https://www.tensorflow.org/install).
+
+You will need to install the requirements before you can use DeepSearch. To install the requirements, run the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
+With everything installed, you can now start utilizing DeepSearch.
 
 ## Usage
 
