@@ -62,23 +62,11 @@ Then, you need to create an instance of the DeepSearch class. You can optionally
 deepSearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbose=True)
 ```
 
-The `model_name` parameter specifies the name of the model to use for extracting features from images. The default value is `VGG16`. You can get a list of available models by calling the static `get_available_models()` method of the DeepSearch class as follows:
-
-```python
-models = DeepSearch.get_available_models()
-print(models)
-```
+The `model_name` parameter specifies the name of the model to use for extracting features from images. More information about the supported models can be found [here](#supported-models).
 
 The `n_trees` parameter specifies the number of trees to use in the Annoy index. The default value is `100`. More trees will give you better accuracy but will also increase the memory usage and search time.
 
-The `metric` parameter specifies the distance metric to use in the Annoy index. The default value is `angular` which is the cosine distance.
-
-You can get a list of available metrics by calling the static `get_available_metrics()` method of the DeepSearch class as follows:
-
-```python
-metrics = DeepSearch.get_available_metrics()
-print(metrics)
-```
+The `metric` parameter specifies the distance metric to use in the Annoy index. More information about the supported metrics can be found [here](#supported-metrics).
 
 The `verbose` parameter specifies whether to print the progress of the indexing process. The default value is `False`.
 
@@ -155,12 +143,16 @@ The following example shows how to use DeepSearch in your code. It will index al
 ```python
 from DeepSearch import DeepSearch
 
+# Initialize the DeepSearch class
 deepsearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbose=True)
 
+# Build the index and representations
 deepsearch.build('dataset')
 
+# Search for similar images
 similar_images = deepsearch.get_similar_images('lookup/query.jpg', num_results=20, with_distance=True)
 
+# Print the similar images
 print(similar_images)
 ```
 
@@ -208,6 +200,14 @@ The following models are supported:
 - **[InceptionV3](https://keras.io/api/applications/inceptionv3/)**
 - **[Xception](https://keras.io/api/applications/xception/)**
 
+The default value is `VGG16`. You can get a list of available models by calling the static `get_available_models()` method of the DeepSearch class as follows:
+
+```python
+# Get a list of available models
+models = DeepSearch.get_available_models()
+print(models) # ['VGG16', 'ResNet50', 'InceptionV3', 'Xception']
+```
+
 The models are case sensitive and must be specified exactly as shown above.
 
 You can easily add support for other models from the [Keras](https://keras.io/api/applications/) Applications library by adding a new model class to the `models` dictionary in the `ModelLoader` class.
@@ -221,6 +221,16 @@ The following metrics are supported:
 - **[manhattan](https://en.wikipedia.org/wiki/Taxicab_geometry)** - The Manhattan distance metric.
 - **[hamming](https://en.wikipedia.org/wiki/Hamming_distance)** - The Hamming distance metric.
 - **[dot](https://en.wikipedia.org/wiki/Dot_product)** - The dot product metric.
+
+The default value is `angular` which is the cosine distance.
+
+You can get a list of available metrics by calling the static `get_available_metrics()` method of the DeepSearch class as follows:
+
+```python
+# Get a list of available metrics
+metrics = DeepSearch.get_available_metrics()
+print(metrics) # ['angular', 'euclidean', 'manhattan', 'hamming', 'dot']
+```
 
 The metrics are case sensitive and must be specified exactly as shown above.
 
