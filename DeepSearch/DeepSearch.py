@@ -38,7 +38,8 @@ class DeepSearch:
 
     @staticmethod
     def get_available_models() -> list:
-        """Get the available models
+        """
+        Get the available models
 
         Returns:
             list: List of available models
@@ -47,7 +48,8 @@ class DeepSearch:
 
     @staticmethod
     def get_available_metrics() -> list:
-        """Get the available metrics
+        """
+        Get the available metrics
 
         Returns:
             list: List of available metrics
@@ -61,7 +63,8 @@ class DeepSearch:
         self.metric = metric
 
     def set_n_trees(self, n_trees: int):
-        """Set the number of trees to use for the index
+        """
+        Set the number of trees to use for the index
 
         Args:
             n_trees (int): Number of trees
@@ -69,7 +72,8 @@ class DeepSearch:
         self.n_trees = n_trees
 
     def set_paths(self, db_path: str):
-        """Set the paths for the representations and annoy index
+        """
+        Set the paths for the representations and annoy index
 
         Args:
             db_path (str): Path to the database
@@ -87,7 +91,8 @@ class DeepSearch:
         self.annoy_index_path = annoy_index_path
 
     def load_images(self, db_path: str) -> list:
-        """Load the images from the database path
+        """
+        Load the images from the database path
 
         Args:
             db_path (str): Path to the database
@@ -104,7 +109,8 @@ class DeepSearch:
         return images
 
     def extract(self, image: str) -> np.array:
-        """Extract the features from the image
+        """
+        Extract the features from the image
 
         Args:
             image (str): Path to the image
@@ -130,7 +136,8 @@ class DeepSearch:
         return feature / np.linalg.norm(feature)
 
     def get_features(self, images: list) -> list:
-        """Get the features from the images
+        """
+        Get the features from the images
 
         Args:
             images (list): List of images
@@ -149,7 +156,8 @@ class DeepSearch:
         return features
 
     def start_feature_extraction(self, images: list, representations_path: str) -> pd.DataFrame:
-        """Start the feature extraction
+        """
+        Start the feature extraction
 
         Args:
             images (list): List of images
@@ -167,7 +175,8 @@ class DeepSearch:
         return images_data
 
     def start_indexing(self, images_data: pd.DataFrame, annoy_index_path: str):
-        """Start the indexing process and save the annoy index
+        """
+        Start the indexing process and save the annoy index
 
         Args:
             images_data (pd.DataFrame): Pandas Dataframe with the images and features
@@ -182,7 +191,8 @@ class DeepSearch:
         print(f"Annoy index built and saved to {annoy_index_path}")
 
     def rebuild(self, db_path: str):
-        """Rebuild the index and representations from the database path
+        """
+        Rebuild the index and representations from the database path
 
         Args:
             db_path (str): Path to the database
@@ -202,7 +212,8 @@ class DeepSearch:
     def build(
         self, db_path: str, metric: str = None, n_trees: int = None, model_name: str = None
     ) -> bool:
-        """Build the index and representations from the database path and save them to the database path.
+        """
+        Build the index and representations from the database path and save them to the database path.
 
         Args:
             db_path (str, required):
@@ -307,7 +318,8 @@ class DeepSearch:
     def get_similar_images(
         self, image_path: str, num_results: int = 10, with_distance: bool = True
     ) -> dict:
-        """Get similar images to the query image
+        """
+        Get similar images to the query image
 
         Args:
             image_path (str):
