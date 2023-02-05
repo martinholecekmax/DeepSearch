@@ -1,6 +1,6 @@
 # DeepSearch
 
-<p align="center"><img src="https://github.com/martinholecekmax/DeepSearch/blob/main/assets/logo.png?raw=true" width="200" height="200"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/martinholecekmax/DeepSearch/main/assets/logo.png" width="200" height="200"></p>
 
 DeepSearch is a sophisticated AI-powered search engine designed to enhance image searching. It utilizes deep learning algorithms to efficiently search a vast collection of images and find the most similar matches.
 
@@ -11,7 +11,9 @@ The engine uses a pre-trained models from [Keras](https://keras.io/api/applicati
 ## Table of Contents
 
 - [Features](#features)
-- [Installation](#installation)
+- [Prerequisites](#prerequisites)
+- [Installation from PyPI](#installation-from-pypi)
+- [Installation from GitHub Repository](#installation-from-github-repository)
 - [Usage](#usage)
   - [Importing the DeepSearch class](#importing-the-deepsearch-class)
   - [Initializing the DeepSearch class](#initializing-the-deepsearch-class)
@@ -31,9 +33,27 @@ The engine uses a pre-trained models from [Keras](https://keras.io/api/applicati
 - **Easy to use**: DeepSearch is designed to be easy to use and integrate into your existing applications.
 - **High Accuracy**: DeepSearch uses a pre-trained model from Keras to extract features from images and then stores them in an Annoy index. The index is then used to find the most similar images to a given query image.
 
-## Installation
+## Prerequisites
 
 Python 3.10.6+ is required to install DeepSearch. You can download the latest version of Python from [here](https://www.python.org/downloads/).
+
+You also need to install TensorFlow at least 2.10.1 which can be downloaded from [here](https://www.tensorflow.org/install).
+
+## Installation from PyPI
+
+You can install DeepSearch from PyPI package repository found [here](https://pypi.org/project/deep-search-engine/)
+
+To install DeepSearch, run the following command:
+
+```bash
+pip install deep-search-engine
+```
+
+## Installation from GitHub Repository
+
+You can also install DeepSearch from the GitHub repository found [here](https://github.com/martinholecekmax/DeepSearch) by cloning the repository and installing the requirements.
+
+**Important Note**: In order to use DeepSearch CLI you need to install it from the GitHub repository.
 
 It is recommended to install DeepSearch in a virtual environment. You can use [virtualenv](https://virtualenv.pypa.io/en/latest/) or [venv](https://docs.python.org/3/library/venv.html) to create a virtual environment.
 
@@ -52,8 +72,6 @@ source env/Scripts/activate
 # Linux
 source env/bin/activate
 ```
-
-You also need to install TensorFlow at least 2.10.1 which can be downloaded from [here](https://www.tensorflow.org/install).
 
 You will need to install the requirements before you can use DeepSearch. To install the requirements, run the following command:
 
@@ -186,6 +204,8 @@ python DeepSearchDemo.py
 ```
 
 ## CLI Usage
+
+In order to use DeepSearch from the command line, you need to install the DeepSearch CLI from GitHub explained in the [Installation from GitHub Repository](#installation-from-github-repository) section.
 
 The another option for using DeepSearch is to use the DeepSearch CLI. The DeepSearch CLI allows you to use DeepSearch from the command line without writing any code.
 
