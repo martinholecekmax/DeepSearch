@@ -1,6 +1,6 @@
 # DeepSearch
 
-<p align="center"><img src="https://github.com/martinholecekmax/DeepSearch/blob/main/assets/logo.png" width="200" height="200"></p>
+<p align="center"><img src="https://github.com/martinholecekmax/DeepSearch/blob/main/assets/logo.png?raw=true" width="200" height="200"></p>
 
 DeepSearch is a sophisticated AI-powered search engine designed to enhance image searching. It utilizes deep learning algorithms to efficiently search a vast collection of images and find the most similar matches.
 
@@ -96,7 +96,7 @@ The `verbose` parameter specifies whether to print the progress of the indexing 
 Now, you can build the index and representations by calling the `build()` method. This method requires the path to the `dataset` directory which contains the images to index as a string.
 
 ```python
-deepsearch.build('dataset')
+deepSearch.build('dataset')
 ```
 
 This function will go through all the images in the `dataset` directory and extract features from them. It will use those features to build the Annoy index and store the indexes and representations in the same directory.
@@ -130,7 +130,7 @@ Finally, you can search for similar images by calling the `get_similar_images()`
 You can optionally pass the number of similar images to return as an integer. The default value is 10. You can specify the optional parameter `with_distances` as True to return the distances of the similar images as well. The default value of this parameter is `False`.
 
 ```python
-similar_images = deepsearch.get_similar_images('query.jpg', num_results=20, with_distance=True)
+similar_images = deepSearch.get_similar_images('query.jpg', num_results=20, with_distance=True)
 print(similar_images)
 ```
 
@@ -165,13 +165,13 @@ The following example shows how to use DeepSearch in your code. It will index al
 from DeepSearch import DeepSearch
 
 # Initialize the DeepSearch class
-deepsearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbose=True)
+deepSearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbose=True)
 
 # Build the index and representations
-deepsearch.build('dataset')
+deepSearch.build('dataset')
 
 # Search for similar images
-similar_images = deepsearch.get_similar_images('lookup/query.jpg', num_results=20, with_distance=True)
+similar_images = deepSearch.get_similar_images('lookup/query.jpg', num_results=20, with_distance=True)
 
 # Print the similar images
 print(similar_images)
