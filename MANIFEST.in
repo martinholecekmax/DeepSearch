@@ -1,0 +1,6 @@
+include *.py
+include *.txt
+recursive-include assets *.png
+recursive-include dataset *.md
+recursive-include lookup *.md
+recursive-include output *.md
