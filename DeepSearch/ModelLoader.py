@@ -1,13 +1,7 @@
 from keras.models import Model
-from keras.layers import Input
-from keras.applications.vgg16 import VGG16, preprocess_input as vgg_preprocess_input
-from keras.applications.inception_v3 import (
-    InceptionV3,
-    preprocess_input as inception_preprocess_input,
-)
-from keras.applications.resnet import ResNet50, preprocess_input as resnet_preprocess_input
-from keras.applications.xception import Xception, preprocess_input as xception_preprocess_input
 import numpy as np
+
+from DeepSearch.models import VGG16, ResNet50, InceptionV3, Xception
 
 """
 Models dictionary from Keras documentation:
@@ -15,26 +9,10 @@ Models dictionary from Keras documentation:
 """
 
 models = {
-    "VGG16": {
-        "preprocess_input": vgg_preprocess_input,
-        "base_model": VGG16(weights="imagenet"),
-        "layer": "fc1",
-    },
-    "ResNet50": {
-        "preprocess_input": resnet_preprocess_input,
-        "base_model": ResNet50(weights="imagenet"),
-        "layer": "avg_pool",
-    },
-    "InceptionV3": {
-        "preprocess_input": inception_preprocess_input,
-        "base_model": InceptionV3(weights="imagenet", input_tensor=Input(shape=(224, 224, 3))),
-        "layer": "avg_pool",
-    },
-    "Xception": {
-        "preprocess_input": xception_preprocess_input,
-        "base_model": Xception(weights="imagenet", input_tensor=Input(shape=(224, 224, 3))),
-        "layer": "avg_pool",
-    },
+    "VGG16": VGG16,
+    "ResNet50": ResNet50,
+    "InceptionV3": InceptionV3,
+    "Xception": Xception,
 }
 
 
@@ -47,29 +25,12 @@ class ModelLoader:
                 The model name to load. Must be one of the keys in the models
                 dictionary (VGG16, ResNet50, InceptionV3, Xception, etc.)
         """
-        self.model_name = model_name
-        self.load_model(model_name)
-
-    def load_model(self, model_name: str = None):
-        """Load the model from the models dictionary and set the model attribute.
-
-        Args:
-            model_name (str, optional):
-                The model name to load. Defaults to None.
-
-        Raises:
-            Exception:
-                Model must be one of models from models dictionary
-                (VGG16, ResNet50, InceptionV3, Xception, etc.)
-        """
-
         # Model name is not in models dictionary
         if model_name not in models:
             raise Exception(f"Model must be one of {models}")
 
-        base_model = models[model_name]["base_model"]
-        layer = models[model_name]["layer"]
-        self.model = Model(inputs=base_model.input, outputs=base_model.get_layer(layer).output)
+        self.model_name = model_name
+        self.model = models[model_name].get_model()
 
     def get_model_name(self) -> str:
         """Get the model name.
@@ -108,4 +69,4 @@ class ModelLoader:
         Returns:
             np.ndarray: The preprocessed image
         """
-        return models[self.model_name]["preprocess_input"](image)
+        return models[self.model_name].preprocess_image(image)

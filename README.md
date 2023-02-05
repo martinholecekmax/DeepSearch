@@ -226,7 +226,7 @@ To run the DeepSearch CLI, you need to run the DeepSearchCLI.py file as follows:
 
 ```bash
 # Example with required options only
-python DeepSearchCLI.py --folder dataset --image lookup/test.jpg
+python DeepSearchCLI.py --folder dataset --image lookup/query.jpg
 
 # Example with several options
 python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --output output --num_results 20 --metric euclidean --n_trees 20 --model ResNet50 --verbose True

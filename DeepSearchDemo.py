@@ -23,7 +23,7 @@ deepSearch = DeepSearch(model_name="InceptionV3", metric="angular", n_trees=10)
 deepSearch.build("dataset")
 
 # Search for similar images (make sure to add a lookup image called test.jpg to the lookup folder)
-similar = deepSearch.get_similar_images("lookup/test.jpg", num_results=10, with_distance=True)
+similar = deepSearch.get_similar_images("lookup/query.jpg", num_results=10, with_distance=True)
 
 # Print the results
 print(similar)

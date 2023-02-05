@@ -244,11 +244,16 @@ class DeepSearch:
 
         # Set model_name if different and not null
         if model_name and model_name != self.model.get_model_name():
-            self.model.load_model(model_name)
+            self.model = ModelLoader(model_name)
 
         if os.path.exists(db_path):
             # Load images
             images = self.load_images(db_path)
+
+            # No images found
+            if len(images) == 0:
+                print("No images found in database")
+                return False
 
             # Set paths
             self.set_paths(db_path)
