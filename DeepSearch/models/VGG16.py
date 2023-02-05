@@ -5,13 +5,15 @@ import os
 
 
 def get_model():
-    if not os.path.exists("DeepSearch/weights/VGG16.h5"):
+    package_directory = os.path.dirname(os.path.abspath(__file__))
+    weights_path = os.path.join(package_directory, "weights/VGG16.h5")
+    if not os.path.exists(weights_path):
         print("Downloading VGG16 model...")
         base_model = VGG16(weights="imagenet", include_top=True)
         model = Model(inputs=base_model.input, outputs=base_model.get_layer("fc1").output)
-        model.save("DeepSearch/weights/VGG16.h5")
+        model.save(weights_path)
     else:
-        model = load_model("DeepSearch/weights/VGG16.h5", compile=False)
+        model = load_model(weights_path, compile=False)
     return model
 
 
