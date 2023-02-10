@@ -4,9 +4,9 @@
 
 DeepSearch is a sophisticated AI-powered search engine designed to enhance image searching. It utilizes deep learning algorithms to efficiently search a vast collection of images and find the most similar matches.
 
-The DeepSearch engine is built on top of the [Annoy](https://github.com/spotify/annoy) library, which is a fast, memory-efficient, and easy-to-use library for approximate nearest neighbor search.
+The DeepSearch engine is built on top of the [Annoy](https://github.com/spotify/annoy) library, which is a fast, memory-efficient, and easy-to-use library for approximate nearest-neighbor search.
 
-The engine uses a pre-trained models from [Keras](https://keras.io/api/applications/) to extract features from images and then stores them in an Annoy index. The index is then used to find the most similar images to a given query image.
+The engine uses pre-trained models from [Keras](https://keras.io/api/applications/) to extract features from images and then store them in an Annoy index. The index is then used to find the most similar images to a given query image.
 
 ## Table of Contents
 
@@ -31,7 +31,7 @@ The engine uses a pre-trained models from [Keras](https://keras.io/api/applicati
 
 - **Fast**: DeepSearch is built on top of the Annoy library, which is a fast, memory-efficient, and easy-to-use library for approximate nearest neighbor search.
 - **Easy to use**: DeepSearch is designed to be easy to use and integrate into your existing applications.
-- **High Accuracy**: DeepSearch uses a pre-trained model from Keras to extract features from images and then stores them in an Annoy index. The index is then used to find the most similar images to a given query image.
+- **High Accuracy**: DeepSearch uses a pre-trained model from Keras to extract features from images and then store them in an Annoy index. The index is then used to find the most similar images to a given query image.
 
 ## Prerequisites
 
@@ -41,7 +41,7 @@ You also need to install TensorFlow at least 2.10.1 which can be downloaded from
 
 ## Installation from PyPI
 
-You can install DeepSearch from PyPI package repository found [here](https://pypi.org/project/deep-search-engine/)
+You can install DeepSearch from the PyPI package repository found [here](https://pypi.org/project/deep-search-engine/)
 
 To install DeepSearch, run the following command:
 
@@ -95,7 +95,7 @@ from DeepSearch import DeepSearch
 
 ### Initializing the DeepSearch class
 
-Then, you need to create an instance of the DeepSearch class. You can optionally pass the model name, the number of trees to the constructor, metric, and verbose parameters. The default values are as follows:
+Then, you need to create an instance of the DeepSearch class. You can optionally pass the model name, and the number of trees to the constructor, metric, and verbose parameters. The default values are as follows:
 
 ```python
 deepSearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbose=True)
@@ -103,7 +103,7 @@ deepSearch = DeepSearch(model_name='VGG16', n_trees=100, metric='angular', verbo
 
 The `model_name` parameter specifies the name of the model to use for extracting features from images. More information about the supported models can be found [here](#supported-models).
 
-The `n_trees` parameter specifies the number of trees to use in the Annoy index. The default value is `100`. More trees will give you better accuracy but will also increase the memory usage and search time.
+The `n_trees` parameter specifies the number of trees to use in the Annoy index. The default value is `100`. More trees will give you better accuracy but will also increase memory usage and search time.
 
 The `metric` parameter specifies the distance metric to use in the Annoy index. More information about the supported metrics can be found [here](#supported-metrics).
 
@@ -145,7 +145,7 @@ The `pickle` module is used to save the representations.
 
 Finally, you can search for similar images by calling the `get_similar_images()` method. This method will extract features from the query image and then use them to find the most similar images in the index. You have to specify the path to the query image as a string.
 
-You can optionally pass the number of similar images to return as an integer. The default value is 10. You can specify the optional parameter `with_distances` as True to return the distances of the similar images as well. The default value of this parameter is `False`.
+You can optionally pass the number of similar images to return as an integer. The default value is 10. You can specify the optional parameter `with_distances` as True to return the distances of similar images as well. The default value of this parameter is `False`.
 
 ```python
 similar_images = deepSearch.get_similar_images('query.jpg', num_results=20, with_distance=True)
@@ -207,14 +207,14 @@ python DeepSearchDemo.py
 
 In order to use DeepSearch from the command line, you need to install the DeepSearch CLI from GitHub explained in the [Installation from GitHub Repository](#installation-from-github-repository) section.
 
-The another option for using DeepSearch is to use the DeepSearch CLI. The DeepSearch CLI allows you to use DeepSearch from the command line without writing any code.
+Another option for using DeepSearch is to use the DeepSearch CLI. The DeepSearch CLI allows you to use DeepSearch from the command line without writing any code.
 
-Running the DeepSearch CLI will build the index and search for similar images. The similar images will then be saved in a directory which can be specified using the `--output` option or will be saved in the `output` by default. The output directory will be created if it doesn't exist.
+Running the DeepSearch CLI will build the index and search for similar images. Similar images will then be saved in a directory which can be specified using the `--output` option or will be saved in the `output` by default. The output directory will be created if it doesn't exist.
 
 There are several options you can pass to the DeepSearch CLI. The options are as follows:
 
 - `--folder`: The path to the folder containing the images to index. This option is required.
-- `--output`: The path to the output directory where the similar images will be saved. The default value is `output`.
+- `--output`: The path to the output directory where similar images will be saved. The default value is `output`.
 - `--image`: The path to the query image. This option is required.
 - `--num-results`: The number of similar images to return. The default value is 10.
 - `--metric`: The distance metric to use in the Annoy index. The default value is `angular`.
@@ -249,7 +249,7 @@ models = DeepSearch.get_available_models()
 print(models) # ['VGG16', 'ResNet50', 'InceptionV3', 'Xception']
 ```
 
-The models are case sensitive and must be specified exactly as shown above.
+The models are case-sensitive and must be specified exactly as shown above.
 
 You can easily add support for other models from the [Keras](https://keras.io/api/applications/) Applications library by adding a new model class to the `models` dictionary in the `ModelLoader` class.
 
@@ -273,7 +273,7 @@ metrics = DeepSearch.get_available_metrics()
 print(metrics) # ['angular', 'euclidean', 'manhattan', 'hamming', 'dot']
 ```
 
-The metrics are case sensitive and must be specified exactly as shown above.
+The metrics are case-sensitive and must be specified exactly as shown above.
 
 ## Impact of Image Quantity on Processing Time
 
@@ -283,15 +283,15 @@ Once the representations are generated, the search process is very fast. The sea
 
 When you run the algorithm for the first time, it will generate the representations and save them to a file. The next time you run the algorithm, it will load the representations from the file instead of generating them again. This will significantly reduce the processing time.
 
-For example, I have run the algorithm on a dataset of 100,000 images and the generation of the representations took approximately 12 minutes. Each subsequent run took couple of seconds which depends on the size of the dataset and the number of trees in the Annoy index.
+For example, I have run the algorithm on a dataset of 100,000 images and the generation of the representations took approximately 12 minutes. Each subsequent run took a couple of seconds which depends on the size of the dataset and the number of trees in the Annoy index.
 
 One of the great features is that you can add more images to the dataset and run the algorithm again. The algorithm will only generate representations for the new images and will load the representations for the existing images from the file. This will significantly reduce the processing time.
 
 When the image is deleted from the dataset, the algorithm will remove the representation for the image from the file. This will avoid any issues when searching for similar images.
 
-Any of this operations will force the algorithm to remove the annoy index file and generate it again. This will ensure that the annoy index file is up to date. However, this is relatively fast operation depending on the size of the dataset and the number of trees in the Annoy index. For the previous example of 100,000 images, the generation of the annoy index file took approximately 3 seconds.
+Any of these operations will force the algorithm to remove the Annoy index file and generate it again. This will ensure that the Annoy index file is up to date. However, this is a relatively fast operation depending on the size of the dataset and the number of trees in the Annoy index. For the previous example of 100,000 images, the generation of the annoy index file took approximately 3 seconds.
 
-You can force the algorithm to remove the representations file and annoy index file by passing the `--clear` option to the DeepSearch CLI as follows:
+You can force the algorithm to remove the representation's file and Annoy index file by passing the `--clear` option to the DeepSearch CLI as follows:
 
 ```bash
 python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --clear True
