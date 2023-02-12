@@ -211,7 +211,7 @@ Before using the DeepSearch CLI, you need to install the DeepSearch package usin
 pip install deep-search-engine
 ```
 
-Running the DeepSearch CLI will build the index and search for similar images. Similar images will then be saved in a directory which can be specified using the `--output` option or will be saved in the `output` by default. The output directory will be created if it doesn't exist.
+Running the DeepSearch CLI will build the index and search for similar images. Similar images will then be saved (copied) in a directory which can be specified using the `--output` option or will be saved in the `output` by default. The output directory will be created if it doesn't exist.
 
 There are several options you can pass to the DeepSearch CLI. The options are as follows:
 
