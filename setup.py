@@ -8,7 +8,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = fh.read()
 
-VERSION = "0.0.7"
+VERSION = "0.0.8"
 DESCRIPTION = "DeepSearch image search engine"
 
 # Setting up
@@ -33,6 +33,7 @@ setup(
         "tqdm",
         "tensorflow",
         "typing-extensions",
+        "Click",
     ],
     keywords=[
         "DeepSearch image search",
@@ -48,4 +49,9 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.10",
     ],
+    entry_points={
+        "console_scripts": [
+            "deep-search-engine=DeepSearch.DeepSearchCLI:main",
+        ]
+    },
 )

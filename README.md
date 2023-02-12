@@ -53,8 +53,6 @@ pip install deep-search-engine
 
 You can also install DeepSearch from the GitHub repository found [here](https://github.com/martinholecekmax/DeepSearch) by cloning the repository and installing the requirements.
 
-**Important Note**: In order to use DeepSearch CLI you need to install it from the GitHub repository.
-
 It is recommended to install DeepSearch in a virtual environment. You can use [virtualenv](https://virtualenv.pypa.io/en/latest/) or [venv](https://docs.python.org/3/library/venv.html) to create a virtual environment.
 
 To create a virtual environment using `venv`, run the following command:
@@ -205,9 +203,13 @@ python DeepSearchDemo.py
 
 ## CLI Usage
 
-In order to use DeepSearch from the command line, you need to install the DeepSearch CLI from GitHub explained in the [Installation from GitHub Repository](#installation-from-github-repository) section.
-
 Another option for using DeepSearch is to use the DeepSearch CLI. The DeepSearch CLI allows you to use DeepSearch from the command line without writing any code.
+
+Before using the DeepSearch CLI, you need to install the DeepSearch package using the following command:
+
+```bash
+pip install deep-search-engine
+```
 
 Running the DeepSearch CLI will build the index and search for similar images. Similar images will then be saved in a directory which can be specified using the `--output` option or will be saved in the `output` by default. The output directory will be created if it doesn't exist.
 
@@ -226,10 +228,10 @@ To run the DeepSearch CLI, you need to run the DeepSearchCLI.py file as follows:
 
 ```bash
 # Example with required options only
-python DeepSearchCLI.py --folder dataset --image lookup/query.jpg
+deep-search-engine --folder dataset --image lookup/query.jpg
 
 # Example with several options
-python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --output output --num_results 20 --metric euclidean --n_trees 20 --model ResNet50 --verbose True
+deep-search-engine --folder dataset --image lookup/query.jpg --output output --num_results 20 --metric euclidean --n_trees 20 --model ResNet50 --verbose True
 ```
 
 ## Supported Models
@@ -294,7 +296,7 @@ Any of these operations will force the algorithm to remove the Annoy index file 
 You can force the algorithm to remove the representation's file and Annoy index file by passing the `--clear` option to the DeepSearch CLI as follows:
 
 ```bash
-python DeepSearchCLI.py --folder dataset --image lookup/query.jpg --clear True
+deep-search-engine --folder dataset --image lookup/query.jpg --clear True
 ```
 
 Or you can call the `rebuild()` method of the DeepSearch class if you are using the DeepSearch API as follows:
